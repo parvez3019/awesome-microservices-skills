@@ -62,6 +62,7 @@ awesome-microservices-skills/
 │   ├── workflows/ci.yml            validate + build-drift check on every PR
 │   └── ISSUE_TEMPLATE/
 │
+├── Makefile                    ✏️  Task entry point — `make help`; CI calls the same targets
 ├── PROJECT.md                  ✏️  Repo conventions — the source of truth for contributors
 ├── CLAUDE.md · AGENTS.md       ✏️  Thin pointers at PROJECT.md, for the agents working here
 ├── CONTRIBUTING.md             ✏️  How to write a skill that changes behaviour
@@ -75,8 +76,9 @@ awesome-microservices-skills/
 
 **1. `skills/` is generated. Never edit it.**
 
-Edit `source/`, then run `./tools/build-skills.sh`. CI rebuilds and fails on any diff, so a
-hand-edited `skills/` will be caught — but only after you have wasted the round trip.
+Edit `source/`, then run `make build`. CI rebuilds and fails on any diff, so a hand-edited
+`skills/` will be caught — but only after you have wasted the round trip. `make check` runs the
+whole pipeline locally, which is the same set of targets CI invokes.
 
 **2. Every host manifest points at the same `skills/` folder.**
 

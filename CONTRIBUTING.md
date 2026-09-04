@@ -11,13 +11,14 @@ validator enforces are in [PROJECT.md](PROJECT.md).
 ```bash
 git clone https://github.com/parvez3019/awesome-microservices-skills.git
 cd awesome-microservices-skills
-./tools/validate-skills.sh     # should be clean
+make check     # should pass on a fresh clone
+make help      # every available target
 ```
 
 Two rules that will otherwise cost you a review round:
 
-1. **Never edit `skills/`.** It is generated. Edit `source/`, then `./tools/build-skills.sh`.
-2. **Run `./tools/validate-skills.sh` before pushing.** CI runs it, and it catches the frontmatter
+1. **Never edit `skills/`.** It is generated. Edit `source/`, then `make build`.
+2. **Run `make check` before pushing.** It is exactly what CI runs, and it catches the frontmatter
    mistakes that make a skill silently never load.
 
 ---
@@ -140,7 +141,7 @@ Match what is there. Specifically:
 
 1. Branch from `main`.
 2. Edit `source/`.
-3. `./tools/build-skills.sh && ./tools/validate-skills.sh`.
+3. `make check`.
 4. Commit both `source/` and the regenerated `skills/`.
 5. In the PR description, say **what behaviour changes**. "Adds a check for X" is a description;
    "an agent writing a Kafka consumer will now be told to deduplicate on message ID before

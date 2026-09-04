@@ -10,8 +10,8 @@ permissions:
   contents: read
 
 jobs:
-  skills:
-    name: Validate skills
+  check:
+    name: Validate skills and manifests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,45 +20,20 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Shell syntax check
-        run: bash -n tools/*.sh
+      # Each step is a Makefile target, so `make check` on a laptop runs exactly
+      # what CI runs. They are listed separately here only for better annotations.
 
-      - name: Rebuild skills/ from source/
-        run: ./tools/build-skills.sh
+      - name: Shell and Python syntax
+        run: make shellcheck
 
-      - name: Fail if the committed build output is stale
-        run: |
-          if ! git diff --exit-code --stat -- skills/; then
-            echo "::error::skills/ is out of date. Run ./tools/build-skills.sh and commit the result."
-            exit 1
-          fi
+      - name: Rebuild skills/ and fail if the committed output is stale
+        run: make drift
 
-      - name: Validate skills and manifests
-        run: ./tools/validate-skills.sh
+      - name: Validate skills, frontmatter, cross-references and manifest versions
+        run: make validate
+
+      - name: Parse every host manifest
+        run: make manifests
 
       - name: Install smoke test
-        run: |
-          ./tools/install.sh "$RUNNER_TEMP/skills-check"
-          missing=0
-          for dir in "$RUNNER_TEMP"/skills-check/*/; do
-            if [ ! -f "$dir/SKILL.md" ]; then
-              echo "::error::$dir has no SKILL.md"
-              missing=1
-            fi
-          done
-          exit $missing
-
-  manifests:
-    name: Validate plugin manifests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Parse every manifest as JSON
-        run: |
-          for f in .claude-plugin/plugin.json .claude-plugin/marketplace.json \
-                   .cursor-plugin/plugin.json .cursor-plugin/marketplace.json \
-                   .codex-plugin/plugin.json .agents/plugins/marketplace.json plugin.json; do
-            python3 -c "import json,sys; json.load(open(sys.argv[1]))" "$f"
-            echo "ok  $f"
-          done
+        run: make smoke

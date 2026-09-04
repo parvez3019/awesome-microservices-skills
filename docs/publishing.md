@@ -21,14 +21,12 @@ discoverable.
 Run these before every release:
 
 ```bash
-./tools/build-skills.sh          # regenerate skills/ from source/
-./tools/validate-skills.sh       # frontmatter, budgets, cross-refs, manifest versions
-git diff --exit-code skills/     # must be clean — CI enforces this too
-claude plugin validate .         # the real loader's opinion on your manifests
+make check             # syntax, rebuild, drift, validation, manifests, install smoke test
+make plugin-validate   # the real Claude Code loader's opinion on your manifests
 ```
 
-`claude plugin validate .` is the important one. It parses the manifests the way the client will,
-and it catches schema mistakes that a JSON linter will not.
+`make plugin-validate` is the important one. It parses the manifests the way the client will, and
+it catches schema mistakes that a JSON linter will not.
 
 Then a real install test, from a **different directory** so you are not testing the working tree:
 
@@ -61,13 +59,13 @@ one repository serves as both marketplace and plugin.
 ### 2.2 Release
 
 ```bash
-# 1. Bump the version in ALL FIVE manifests — the validator fails if they disagree
-#    .claude-plugin/plugin.json, .claude-plugin/marketplace.json,
-#    .cursor-plugin/plugin.json, .cursor-plugin/marketplace.json, plugin.json
+# 1. Bump the version across all seven manifests at once. The validator fails if they
+#    disagree, and doing it by hand is the most common release mistake here.
+make version V=0.2.0
 
 # 2. Update CHANGELOG.md
 
-./tools/build-skills.sh && ./tools/validate-skills.sh && claude plugin validate .
+make check && make plugin-validate
 
 git commit -am "release: v0.2.0"
 git tag -a v0.2.0 -m "v0.2.0"
@@ -152,11 +150,9 @@ command. Treat a skill name as a published contract — which is, pleasingly, ex
 
 ```
 [ ] source/ edited (never skills/ directly)
-[ ] ./tools/build-skills.sh
-[ ] ./tools/validate-skills.sh — 0 errors, 0 warnings
-[ ] git diff --exit-code skills/ — clean
-[ ] claude plugin validate . — passes
-[ ] version identical in all 5 manifests
+[ ] make version V=x.y.z — all seven manifests bumped together
+[ ] make check — 0 errors, 0 warnings
+[ ] make plugin-validate — passes
 [ ] CHANGELOG.md updated
 [ ] README catalogue matches the actual skill list
 [ ] fresh install tested from a clean directory

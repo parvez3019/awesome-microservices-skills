@@ -163,10 +163,12 @@ renamed skill cannot leave dangling references.
 ## 10. Before you commit
 
 ```bash
-./tools/build-skills.sh      # regenerate skills/ from source/
-./tools/validate-skills.sh   # frontmatter, budgets, cross-references, links
-git diff --stat skills/      # confirm the build output changed as you expect
+make check
 ```
+
+That is exactly what CI runs — syntax, rebuild, drift check, validation, manifest parse, and an
+install smoke test. `make help` lists every target; the individual ones (`make build`,
+`make validate`, `make list`) are useful while iterating.
 
 Keep `version` identical across all seven manifests — `.claude-plugin/plugin.json`,
 `.claude-plugin/marketplace.json`, `.cursor-plugin/plugin.json`,
