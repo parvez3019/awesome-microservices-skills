@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  skills:
+    name: Validate skills
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Shell syntax check
+        run: bash -n tools/*.sh
+
+      - name: Rebuild skills/ from source/
+        run: ./tools/build-skills.sh
+
+      - name: Fail if the committed build output is stale
+        run: |
+          if ! git diff --exit-code --stat -- skills/; then
+            echo "::error::skills/ is out of date. Run ./tools/build-skills.sh and commit the result."
+            exit 1
+          fi
+
+      - name: Validate skills and manifests
+        run: ./tools/validate-skills.sh
+
+      - name: Install smoke test
+        run: |
+          ./tools/install.sh "$RUNNER_TEMP/skills-check"
+          missing=0
+          for dir in "$RUNNER_TEMP"/skills-check/*/; do
+            if [ ! -f "$dir/SKILL.md" ]; then
+              echo "::error::$dir has no SKILL.md"
+              missing=1
+            fi
+          done
+          exit $missing
+
+  manifests:
+    name: Validate plugin manifests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse every manifest as JSON
+        run: |
+          for f in .claude-plugin/plugin.json .claude-plugin/marketplace.json \
+                   .cursor-plugin/plugin.json .cursor-plugin/marketplace.json \
+                   .codex-plugin/plugin.json .agents/plugins/marketplace.json plugin.json; do
+            python3 -c "import json,sys; json.load(open(sys.argv[1]))" "$f"
+            echo "ok  $f"
+          done

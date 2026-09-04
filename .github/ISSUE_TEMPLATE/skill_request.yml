@@ -1,0 +1,78 @@
+name: Skill request
+description: Propose a new skill, or a new section in an existing one
+labels: ["skill-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before opening this, please check [the catalogue](../blob/main/docs/catalogue.md) —
+        particularly *Frequently confused pairs* and *Not yet covered*. If your idea overlaps an
+        existing skill, the right contribution is usually a section in that skill rather than a new
+        one.
+
+  - type: input
+    id: name
+    attributes:
+      label: Proposed skill name
+      description: kebab-case, or the name of the existing skill you would extend
+      placeholder: observability
+    validations:
+      required: true
+
+  - type: dropdown
+    id: tier
+    attributes:
+      label: Tier
+      options:
+        - Principle — a single-concern guardrail
+        - Workflow — a multi-step procedure composing principles
+        - Profile — a guided interview producing project standards
+        - A section inside an existing skill
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What goes wrong without it
+      description: >
+        A concrete failure an AI assistant produces today. "It does not follow best practices" is not
+        a failure; "it writes a Kafka consumer that acknowledges before the effect is durable" is.
+    validations:
+      required: true
+
+  - type: textarea
+    id: checks
+    attributes:
+      label: Two or three checks it would run
+      description: >
+        The format matters more than the polish. Each check should be answerable about real code,
+        and should say what to do when the answer is wrong.
+      placeholder: |
+        1. LAG BUDGET: Is the acceptable staleness stated as a number and alerted on? If not → ...
+        2. CARDINALITY: Does any metric label carry an unbounded value (user ID, URL path)? → ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: boundary
+    attributes:
+      label: Which existing skill is it closest to, and where is the line?
+      description: >
+        Two skills that fire on the same words means the agent loads both and trusts neither. Name
+        the neighbour and the clause that separates them.
+      placeholder: >
+        Closest to `resilience-patterns`, which owns what the code does when a call fails. This would
+        own how you know it failed — traces, metrics, SLOs.
+    validations:
+      required: true
+
+  - type: textarea
+    id: ambiguity
+    attributes:
+      label: What should it refuse to decide alone?
+      description: >
+        Every real engineering rule has a case where it is wrong. A principle with no ambiguity
+        signals is overconfident.
+    validations:
+      required: true

@@ -1,0 +1,14 @@
+.DS_Store
+*.log
+node_modules/
+.venv/
+__pycache__/
+.idea/
+.vscode/
+
+# Local agent state, if the skills are ever run against this repo itself.
+# Anchored to the root so the worked example under sample/ stays tracked.
+/.msskills/
+
+# Local Claude Code settings
+.claude/settings.local.json

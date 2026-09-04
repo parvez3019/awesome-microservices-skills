@@ -1,0 +1,56 @@
+name: Bug report
+description: A skill did not fire, gave wrong advice, or the tooling failed
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of problem is this?
+      options:
+        - A skill did not fire when it should have
+        - A skill fired when it should not have
+        - A check gives wrong or harmful advice
+        - Two skills overlap and both fired
+        - Build, validator, or install tooling failed
+        - Documentation is wrong or misleading
+    validations:
+      required: true
+
+  - type: input
+    id: skill
+    attributes:
+      label: Which skill
+      placeholder: resilience-patterns
+    validations:
+      required: true
+
+  - type: textarea
+    id: what_happened
+    attributes:
+      label: What happened
+      description: >
+        For a routing problem, include **what you typed** and what you expected to load — that is the
+        most useful bug report this project receives, because the description is the only routing
+        signal and it is the thing most likely to be wrong.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected instead
+    validations:
+      required: true
+
+  - type: textarea
+    id: env
+    attributes:
+      label: Environment
+      value: |
+        - Host: Claude Code / Cursor / Codex / other
+        - Version of this plugin:
+        - Install method: plugin marketplace / tools/install.sh / vendored
+        - Do you have a `.msskills/stack.md`? yes / no
+        - Do you have a `.msskills/config.yaml` overriding this skill? yes / no
+    validations:
+      required: true

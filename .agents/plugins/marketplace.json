@@ -1,0 +1,21 @@
+{
+  "name": "awesome-microservices-skills",
+  "version": "0.1.0",
+  "interface": {
+    "displayName": "Awesome Microservices Skills"
+  },
+  "plugins": [
+    {
+      "name": "microservices-skills",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "NONE"
+      },
+      "category": "Coding"
+    }
+  ]
+}

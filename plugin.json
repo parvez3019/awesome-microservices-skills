@@ -1,0 +1,32 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "microservices-skills",
+  "displayName": "Awesome Microservices Skills",
+  "version": "0.1.0",
+  "description": "Composable AI skills for microservices — design-first facilitation, clean architecture, DDD, CQRS, API contracts, resilience, security, and the full test portfolio.",
+  "author": {
+    "name": "Parvez Hassan",
+    "url": "https://github.com/parvez3019"
+  },
+  "homepage": "https://github.com/parvez3019/awesome-microservices-skills",
+  "repository": "https://github.com/parvez3019/awesome-microservices-skills",
+  "license": "MIT",
+  "keywords": [
+    "microservices",
+    "ddd",
+    "cqrs",
+    "clean-architecture",
+    "solid",
+    "design-patterns",
+    "resilience",
+    "circuit-breaker",
+    "contract-testing",
+    "component-testing",
+    "secure-coding",
+    "config-management",
+    "dependency-management",
+    "design-first",
+    "refactoring",
+    "code-review"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "microservices-skills",
+  "displayName": "Awesome Microservices Skills",
+  "version": "0.1.0",
+  "description": "Composable AI skills for microservices — design-first facilitation, clean architecture, DDD, CQRS, API contracts, resilience, security, and the full test portfolio.",
+  "author": {
+    "name": "Parvez Hassan",
+    "url": "https://github.com/parvez3019"
+  },
+  "homepage": "https://github.com/parvez3019/awesome-microservices-skills",
+  "repository": "https://github.com/parvez3019/awesome-microservices-skills",
+  "license": "MIT",
+  "keywords": [
+    "microservices",
+    "ddd",
+    "cqrs",
+    "clean-architecture",
+    "solid",
+    "resilience",
+    "circuit-breaker",
+    "contract-testing",
+    "secure-coding",
+    "design-first",
+    "code-review"
+  ]
+}
